@@ -42,6 +42,16 @@ pip install -e ".[dev]"
 
 Python 3.10+. No Blender required to build, dump, or diff.
 
+## Quick demo
+
+```bash
+pip install -e ".[dev]"
+python -c "from gn_as_code.samples import build_column; print(build_column().dumps())"
+pytest -q
+```
+
+That prints one shipped sample as canonical JSON, then runs the suite.
+
 ## Graph JSON
 
 Dumps are stable: nodes sorted by id, links sorted, defaults omitted, locations rounded.
@@ -82,9 +92,12 @@ print(format_diff(diff))
 Locations are ignored unless you pass `include_layout=True`.
 
 ```bash
+gn-as-code dump graph.json
 gn-as-code diff old.json new.json
 gn-as-code validate graph.json
 gn-as-code mermaid graph.json
+gn-as-code apply-script graph.json --object Column
+gn-as-code dump-script Column
 ```
 
 ## Apply in Blender (via Plygon-mcp)
