@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "gn-as-code"
 version = "0.1.0"
-description = "Build, dump, and diff Blender Geometry Node trees as version-controlled data."
+description = "Python API to build, dump, and diff Geometry Node trees as data. Git is the source of truth. The .blend is a cache."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10"

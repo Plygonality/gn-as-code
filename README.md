@@ -1,6 +1,6 @@
 # gn-as-code
 
-Geometry Node trees as data. Git is the source of truth. The `.blend` is a cache.
+Python API to build, dump, and diff Geometry Node trees as data. Git is the source of truth. The `.blend` is a cache.
 
 Build graphs in Python. Dump them to JSON. Diff them like code.
 [Plygon-mcp](https://github.com/Plygonality/Plygon-mcp) applies a graph and screenshots the viewport.
