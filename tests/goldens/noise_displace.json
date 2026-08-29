@@ -1,0 +1,209 @@
+{
+  "format": "gn-as-code",
+  "version": 1,
+  "name": "Noise Displace",
+  "kind": "MODIFIER",
+  "blender": "4.2",
+  "interface": {
+    "inputs": [
+      {
+        "name": "Radius",
+        "socket": "FLOAT",
+        "default": 1,
+        "min": 0.1,
+        "max": 10
+      },
+      {
+        "name": "Strength",
+        "socket": "FLOAT",
+        "default": 0.15,
+        "min": 0,
+        "max": 2
+      },
+      {
+        "name": "Scale",
+        "socket": "FLOAT",
+        "default": 4,
+        "min": 0.01,
+        "max": 50
+      }
+    ],
+    "outputs": [
+      {
+        "name": "Geometry",
+        "socket": "GEOMETRY"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "Group Input",
+      "type": "NodeGroupInput",
+      "location": [
+        0,
+        70
+      ]
+    },
+    {
+      "id": "Group Output",
+      "type": "NodeGroupOutput",
+      "location": [
+        1400,
+        0
+      ]
+    },
+    {
+      "id": "amp",
+      "type": "ShaderNodeMath",
+      "location": [
+        560,
+        0
+      ],
+      "properties": {
+        "operation": "MULTIPLY"
+      }
+    },
+    {
+      "id": "displace",
+      "type": "GeometryNodeSetPosition",
+      "location": [
+        1120,
+        0
+      ]
+    },
+    {
+      "id": "noise",
+      "type": "ShaderNodeTexNoise",
+      "location": [
+        280,
+        70
+      ],
+      "inputs": {
+        "Detail": 4
+      }
+    },
+    {
+      "id": "normal",
+      "type": "GeometryNodeInputNormal",
+      "location": [
+        0,
+        -70
+      ]
+    },
+    {
+      "id": "offset",
+      "type": "ShaderNodeVectorMath",
+      "location": [
+        840,
+        0
+      ],
+      "properties": {
+        "operation": "SCALE"
+      }
+    },
+    {
+      "id": "sphere",
+      "type": "GeometryNodeMeshUVSphere",
+      "location": [
+        280,
+        -70
+      ],
+      "inputs": {
+        "Rings": 24,
+        "Segments": 48
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": [
+        "Group Input",
+        "Radius"
+      ],
+      "to": [
+        "sphere",
+        "Radius"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Scale"
+      ],
+      "to": [
+        "noise",
+        "Scale"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Strength"
+      ],
+      "to": [
+        "amp",
+        "Value_001"
+      ]
+    },
+    {
+      "from": [
+        "amp",
+        "Value"
+      ],
+      "to": [
+        "offset",
+        "Scale"
+      ]
+    },
+    {
+      "from": [
+        "displace",
+        "Geometry"
+      ],
+      "to": [
+        "Group Output",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "noise",
+        "Fac"
+      ],
+      "to": [
+        "amp",
+        "Value"
+      ]
+    },
+    {
+      "from": [
+        "normal",
+        "Normal"
+      ],
+      "to": [
+        "offset",
+        "Vector"
+      ]
+    },
+    {
+      "from": [
+        "offset",
+        "Vector"
+      ],
+      "to": [
+        "displace",
+        "Offset"
+      ]
+    },
+    {
+      "from": [
+        "sphere",
+        "Mesh"
+      ],
+      "to": [
+        "displace",
+        "Geometry"
+      ]
+    }
+  ]
+}

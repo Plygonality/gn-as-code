@@ -1,0 +1,185 @@
+{
+  "format": "gn-as-code",
+  "version": 1,
+  "name": "Scatter On Mesh",
+  "kind": "MODIFIER",
+  "blender": "4.2",
+  "interface": {
+    "inputs": [
+      {
+        "name": "Geometry",
+        "socket": "GEOMETRY"
+      },
+      {
+        "name": "Density",
+        "socket": "FLOAT",
+        "default": 25,
+        "min": 0,
+        "max": 500
+      },
+      {
+        "name": "Instance Radius",
+        "socket": "FLOAT",
+        "default": 0.05,
+        "min": 0.001,
+        "max": 1
+      },
+      {
+        "name": "Seed",
+        "socket": "INT",
+        "default": 0
+      }
+    ],
+    "outputs": [
+      {
+        "name": "Geometry",
+        "socket": "GEOMETRY"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "Group Input",
+      "type": "NodeGroupInput",
+      "location": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "Group Output",
+      "type": "NodeGroupOutput",
+      "location": [
+        1120,
+        0
+      ]
+    },
+    {
+      "id": "align",
+      "type": "GeometryNodeAlignRotationToVector",
+      "location": [
+        560,
+        0
+      ],
+      "properties": {
+        "axis": "Z"
+      }
+    },
+    {
+      "id": "instances",
+      "type": "GeometryNodeInstanceOnPoints",
+      "location": [
+        840,
+        0
+      ]
+    },
+    {
+      "id": "pebble",
+      "type": "GeometryNodeMeshIcoSphere",
+      "location": [
+        280,
+        70
+      ]
+    },
+    {
+      "id": "points",
+      "type": "GeometryNodeDistributePointsOnFaces",
+      "location": [
+        280,
+        -70
+      ]
+    }
+  ],
+  "links": [
+    {
+      "from": [
+        "Group Input",
+        "Density"
+      ],
+      "to": [
+        "points",
+        "Density"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Geometry"
+      ],
+      "to": [
+        "points",
+        "Mesh"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Instance Radius"
+      ],
+      "to": [
+        "pebble",
+        "Radius"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Seed"
+      ],
+      "to": [
+        "points",
+        "Seed"
+      ]
+    },
+    {
+      "from": [
+        "align",
+        "Rotation"
+      ],
+      "to": [
+        "instances",
+        "Rotation"
+      ]
+    },
+    {
+      "from": [
+        "instances",
+        "Instances"
+      ],
+      "to": [
+        "Group Output",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "pebble",
+        "Mesh"
+      ],
+      "to": [
+        "instances",
+        "Instance"
+      ]
+    },
+    {
+      "from": [
+        "points",
+        "Normal"
+      ],
+      "to": [
+        "align",
+        "Vector"
+      ]
+    },
+    {
+      "from": [
+        "points",
+        "Points"
+      ],
+      "to": [
+        "instances",
+        "Points"
+      ]
+    }
+  ]
+}
